@@ -17,6 +17,6 @@
     }
   },
   "scripts": {
-    "run-test": "npx cypress run --spec cypress/e2e/features/ApplicationTest.feature"
+    "run-test": "npx cypress run --spec cypress/e2e/features/ApplicationTest.feature --browser chrome"
   }
 }
