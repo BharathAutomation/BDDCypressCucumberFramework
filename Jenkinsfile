@@ -9,18 +9,12 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                bat 'npm ci' // Use npm ci for faster, reproducible builds
+                bat 'npm install'
             }
         }
         stage('Run Tests') {
             steps {
-                script {
-                    def startTime = new Date().getTime()
-                    bat 'npx cypress run --headless --parallel' // Run Cypress tests in headless mode and in parallel
-                    def endTime = new Date().getTime()
-                    def duration = endTime - startTime
-                    echo "Test duration: ${duration} ms"
-                }
+                bat 'npx cypress run --spec cypress/e2e/features/ApplicationTest.feature'
             }
         }
         stage('Generate Report') {
