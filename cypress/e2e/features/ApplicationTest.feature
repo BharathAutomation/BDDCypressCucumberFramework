@@ -29,25 +29,25 @@ Feature: Parabank Application Login and Registration Feature
     Given Launch the application
     Then Verify application home page left menu
 
-  # Scenario Outline: Verify new user registration
-  #   Given Launch the application
-  #   When I click on the registration link
-  #   Then Registration page should be launched with title "Signing up is easy!"
-  #   When I update user details with "<username>" and "<password>"
-  #   And I click on Register button
-  #   Then Registration should be successful
+  Scenario Outline: Verify new user registration
+    Given Launch the application
+    When I click on the registration link
+    Then Registration page should be launched with title "Signing up is easy!"
+    When I update user details with "<username>" and "<password>"
+    And I click on Register button
+    Then Registration should be successful
 
-  #   Examples:
-  #     | username | password |
-  #     | admin2   | admin123 |
+    Examples:
+      | username | password |
+      | admin3   | admin123 |
 
-  # Scenario Outline: Verify user login with <scenario>
-  #   Given Launch the application
-  #   When I login with "<username>" and "<password>"
-  #   And I click on login button
-  #   Then Verify the login "<scenario>"
+  Scenario Outline: Verify user login with <scenario>
+    Given Launch the application
+    When I login with "<username>" and "<password>"
+    And I click on login button
+    Then Verify the login "<scenario>"
 
-  #   Examples:
-  #     | scenario            | username | password   |
-  #     | valid credentials   | admin    | admin123   |
-  #     | invalid credentials | invalid  | invalid123 |
+    Examples:
+      | scenario            | username | password   |
+      | valid credentials   | admin3   | admin123   |
+      | invalid credentials | invalid  | invalid123 |

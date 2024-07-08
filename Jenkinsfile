@@ -14,18 +14,14 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                bat 'npm run run-test'
+                bat 'npx cypress run'
             }
-        }
-        stage('Generate Report') {
-            steps {
-                bat 'npm run generate-multi-cucumber-html-report'
-            }
-        }
+        }        
     }
     post {
         always {
-            echo 'Cypress tests completed.'
+            archiveArtifacts artifacts: 'cypress/reports/*.html', allowEmptyArchive: true
+            junit 'cypress/reports/*.xml'
         }
     }
 }
