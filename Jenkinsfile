@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                bat 'npx cypress run'
+                bat 'npm run run-test'
             }
         }        
     }
