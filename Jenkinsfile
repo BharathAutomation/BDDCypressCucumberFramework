@@ -24,6 +24,9 @@ pipeline {
         }
     }
     post {
-      
+        always {
+            archiveArtifacts artifacts: 'cypress/reports/*.html', allowEmptyArchive: false
+            junit 'cypress/reports/*.xml'
+        }
     }
 }
