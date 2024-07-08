@@ -4,17 +4,25 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/BharathAutomation/BDDCypressCucumberFramework'
+                git 'https://github.com/BharathAutomation/BDDCypressCucumberFramework.git'
             }
         }
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                bat 'npm ci'
             }
         }
         stage('Run Tests') {
             steps {
-                bat 'npx cypress run --spec cypress/e2e/features/ApplicationTest.feature'
+                script {
+                    try {
+                        bat 'npx cypress run --headless --spec cypress/e2e/features/ApplicationTest.feature'
+                    } catch (Exception e) {
+                        echo "Failed to run Cypress tests: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error('Cypress tests failed')
+                    }
+                }
             }
         }
         stage('Generate Report') {
