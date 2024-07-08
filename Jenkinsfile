@@ -1,35 +1,32 @@
 pipeline {
     agent any
 
-    environment {
-        REPO_URL = 'https://github.com/BharathAutomation/BDDCypressCucumberFramework'
-        BRANCH = 'master'
-        CYPRESS_BROWSER = 'chrome'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: "${BRANCH}", url: "${REPO_URL}"
+                git 'https://github.com/BharathAutomation/BDDCypressCucumberFramework'
             }
         }
-
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
-
         stage('Run Tests') {
             steps {
-                sh 'npx cypress run --spec cypress/e2e/features/ApplicationTest.feature'
+                bat 'npx cypress run'
             }
         }
-
         stage('Generate Report') {
             steps {
-                sh 'node cypress/cucumber-html-report.js'
+                bat 'npm run generate-multi-cucumber-html-report'
             }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'cypress/reports/*.html', allowEmptyArchive: true
+            junit 'cypress/reports/*.xml'
         }
     }
 }
