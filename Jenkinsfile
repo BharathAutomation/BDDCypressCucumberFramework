@@ -1,40 +1,42 @@
 pipeline {
     agent any
-
+    
+    tools {
+        nodejs 'v20.11.1'
+    }
+    
+    environment {
+        CYPRESS_CACHE_FOLDER = "${HOME}/.cache/Cypress"
+    }
+    
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/BharathAutomation/BDDCypressCucumberFramework.git'
+                checkout scm
             }
         }
-        stage('Install Dependencies') {
+        
+        stage('Install dependencies') {
             steps {
-                bat 'npm ci'
+                sh 'npm install'
             }
         }
-        stage('Run Tests') {
+        
+        stage('Run Cypress tests') {
             steps {
                 script {
-                    try {
-                        bat 'npx cypress run --headless --spec cypress/e2e/features/ApplicationTest.feature'
-                    } catch (Exception e) {
-                        echo "Failed to run Cypress tests: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error('Cypress tests failed')
-                    }
+                    def cypressCmd = "npx cypress run --spec cypress/e2e/features/ApplicationTest.feature"
+                    sh cypressCmd
                 }
             }
-        }
-        stage('Generate Report') {
-            steps {
-                bat 'npm run generate-multi-cucumber-html-report'
+            
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: '**/junit.xml'
+                    archiveArtifacts artifacts: '**/cypress/videos/*.mp4', allowEmptyArchive: true
+                    archiveArtifacts artifacts: '**/cypress/screenshots/**/*.png', allowEmptyArchive: true
+                }
             }
-        }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: 'cypress/reports/*.html', allowEmptyArchive: true
-            junit 'cypress/reports/*.xml'
         }
     }
 }
