@@ -39,7 +39,7 @@ Feature: Parabank Application Login and Registration Feature
 
     Examples:
       | username | password |
-      | admin3   | admin123 |
+      | admin5   | admin123 |
 
   Scenario Outline: Verify user login with <scenario>
     Given Launch the application

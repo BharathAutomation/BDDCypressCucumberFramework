@@ -15,5 +15,7 @@
       "filePrefix": "",
       "fileSuffix": ".cucumber"
     }
+  },"scripts": {
+    "run-tests":"npx cypress run --spec cypress/e2e/features/ApplicationTest.feature --browser chrome"
   }
 }
